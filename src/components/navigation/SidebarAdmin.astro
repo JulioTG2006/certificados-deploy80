@@ -1,6 +1,6 @@
 <aside class="w-72 bg-slate-900 text-white min-h-screen p-6 flex flex-col">
 
-  <h2 class="text-3xl font-bold mb-10">
+  <h2 id="sidebarTitle" class="text-3xl font-bold mb-10">
     ADMIN PANEL
   </h2>
 
@@ -15,7 +15,7 @@
 
     <a
       href="/admin/usuarios"
-      class="hover:bg-slate-800 px-4 py-3 rounded-xl transition"
+      class="solo-admin hover:bg-slate-800 px-4 py-3 rounded-xl transition"
     >
       Usuarios
     </a>
@@ -53,9 +53,30 @@
 </aside>
 
 <script>
+  // Manejo del cierre de sesión existente
   document.getElementById("logoutBtn").addEventListener("click", () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     window.location.replace("/login");
   });
+
+  // Control de interfaz según el rol
+  const userData = localStorage.getItem("user");
+  if (userData) {
+    const user = JSON.parse(userData);
+
+    if (user.rol_id === 3) {
+      // 1. Cambia el encabezado superior del menú lateral
+      const titleEl = document.getElementById("sidebarTitle");
+      if (titleEl) {
+        titleEl.textContent = "REVISOR PANEL";
+      }
+
+      // 2. Elimina la opción de Usuarios para restringir accesos visuales
+      const restrictedLinks = document.querySelectorAll(".solo-admin");
+      restrictedLinks.forEach(link => {
+        link.remove();
+      });
+    }
+  }
 </script>

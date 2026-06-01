@@ -6,7 +6,7 @@ import Card from "../../components/ui/Card.astro";
 <AdminLayout title="Panel Administrador">
 
   <div class="mb-10">
-    <h1 class="text-4xl font-bold text-slate-800">
+    <h1 id="panelTitle" class="text-4xl font-bold text-slate-800">
       Panel Administrativo
     </h1>
 
@@ -16,7 +16,9 @@ import Card from "../../components/ui/Card.astro";
   </div>
 
   <div class="grid md:grid-cols-4 gap-6 mb-10">
-    <Card title="Usuarios" value="240" />
+    <div class="solo-admin">
+      <Card title="Usuarios" value="240" />
+    </div>
     <Card title="Solicitudes" value="128" />
     <Card title="Certificados" value="54" />
     <Card title="Pendientes" value="17" />
@@ -45,16 +47,32 @@ import Card from "../../components/ui/Card.astro";
   </div>
 
   <script>
-  const userData = localStorage.getItem("user");
+    const userData = localStorage.getItem("user");
 
-  if (!userData) {
-    window.location.replace("/login");
-  } else {
-    const user = JSON.parse(userData);
+    if (!userData) {
+      window.location.replace("/login");
+    } else {
+      const user = JSON.parse(userData);
 
-    if (user.rol_id !== 2) {
-      window.location.replace("/dashboard");
+      // 1. Permitimos el acceso solo si es Admin (2) o Revisor (3). Si es Alumno (1), lo mandamos al dashboard.
+      if (user.rol_id !== 2 && user.rol_id !== 3) {
+        window.location.replace("/dashboard");
+      }
+
+      // 2. Si es Revisor (rol_id === 3), personalizamos la interfaz de usuario
+      if (user.rol_id === 3) {
+        // Cambiamos el texto del título principal
+        const titulo = document.getElementById("panelTitle");
+        if (titulo) {
+          titulo.textContent = "Panel Revisor";
+        }
+
+        // Limpiamos la pantalla borrando los elementos con la clase 'solo-admin'
+        const elementosRestringidos = document.querySelectorAll('.solo-admin');
+        elementosRestringidos.forEach(elemento => {
+          elemento.remove(); // Desaparece la tarjeta de usuarios por completo
+        });
+      }
     }
-  }
-</script>
+  </script>
 </AdminLayout>

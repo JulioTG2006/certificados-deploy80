@@ -2,10 +2,125 @@
 import AdminLayout from "../../layouts/AdminLayout.astro";
 ---
 
-<AdminLayout title="Admin">
+<AdminLayout title="Gestión de Usuarios">
   <div class="bg-white rounded-3xl shadow-md p-8">
-    <h1 class="text-3xl font-bold">
-      Página administrativa
-    </h1>
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-3xl font-bold text-slate-800">Lista de Usuarios</h1>
+    </div>
+
+    <div class="overflow-x-auto mb-6">
+      <table class="w-full text-left border-collapse">
+        <thead>
+          <tr class="border-b text-slate-600 bg-slate-50">
+            <th class="py-3 px-4">ID</th>
+            <th class="py-3 px-4">Email</th>
+            <th class="py-3 px-4">Rol</th>
+            <th class="py-3 px-4">Estado</th>
+          </tr>
+        </thead>
+        <tbody id="usuariosTableBody" class="text-slate-700">
+        </tbody>
+      </table>
+    </div>
+
+    <div class="flex justify-between items-center bg-slate-50 p-4 rounded-xl">
+      <span id="pageIndicator" class="text-sm text-gray-600">Página 1</span>
+      <div class="flex gap-2">
+        <button 
+          id="prevPageBtn" 
+          class="bg-slate-200 text-slate-700 px-4 py-2 rounded-xl hover:bg-slate-300 disabled:opacity-50 font-medium transition"
+          disabled
+        >
+          Anterior
+        </button>
+        <button 
+          id="nextPageBtn" 
+          class="bg-slate-900 text-white px-4 py-2 rounded-xl hover:bg-slate-800 disabled:opacity-50 font-medium transition"
+        >
+          Siguiente
+        </button>
+      </div>
+    </div>
   </div>
+
+  <script>
+    let currentPage = 1;
+    const limit = 5;
+
+    async function loadUsuarios(page) {
+      try {
+        const tbody = document.getElementById("usuariosTableBody");
+        
+        const token = localStorage.getItem("token");
+        if (!token) {
+          window.location.replace("/login");
+          return;
+        }
+
+        const response = await fetch(`http://localhost:3000/api/auth/users?page=${page}&limit=${limit}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error("No se pudo obtener la información de los usuarios");
+        }
+
+        const data = await response.json();
+
+        if (tbody) {
+          tbody.innerHTML = ""; 
+
+          data.usuarios.forEach(usuario => {
+            const tr = document.createElement("tr");
+            tr.className = "border-b hover:bg-slate-50 transition";
+            tr.innerHTML = `
+              <td class="py-3 px-4 font-bold">${usuario.id}</td>
+              <td class="py-3 px-4">${usuario.email}</td>
+              <td class="py-3 px-4">
+                <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-md font-semibold">
+                  Rol ${usuario.rol_id}
+                </span>
+              </td>
+              <td class="py-3 px-4">
+                <span class="text-green-600 font-medium">${usuario.estado || 'activo'}</span>
+              </td>
+            `;
+            tbody.appendChild(tr);
+          });
+        }
+
+        const pageIndicator = document.getElementById("pageIndicator");
+        if (pageIndicator) {
+          pageIndicator.textContent = `Página ${page} de ${data.totalPages || 1}`;
+        }
+
+        const prevBtn = document.getElementById("prevPageBtn") as HTMLButtonElement;
+        const nextBtn = document.getElementById("nextPageBtn") as HTMLButtonElement;
+        
+        if (prevBtn) prevBtn.disabled = page === 1;
+        if (nextBtn) nextBtn.disabled = page === data.totalPages || data.usuarios.length < limit;
+
+      } catch (error) {
+        console.error("Error al conectar con la API de usuarios:", error);
+      }
+    }
+
+    document.getElementById("prevPageBtn")?.addEventListener("click", () => {
+      if (currentPage > 1) {
+        currentPage--;
+        loadUsuarios(currentPage);
+      }
+    });
+
+    document.getElementById("nextPageBtn")?.addEventListener("click", () => {
+      currentPage++;
+      loadUsuarios(currentPage);
+    });
+
+    loadUsuarios(currentPage);
+  </script>
 </AdminLayout>

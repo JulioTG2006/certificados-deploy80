@@ -20,3 +20,6 @@ pnpm-debug.log*
 
 # IDE
 .idea/
+.env.development
+.env.production
+backend/.env

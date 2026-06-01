@@ -17,7 +17,10 @@ dotenv.config();
 const app = express();
 
 /* 🔥 MIDDLEWARES */
-app.use(cors());
+app.use(cors({
+  origin: true,
+  credentials: true
+}));
 app.use(express.json());
 
 /* 🔥 RUTAS (AQUÍ TODAS) */

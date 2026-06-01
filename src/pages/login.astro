@@ -81,10 +81,11 @@ import AuthLayout from "../layouts/AuthLayout.astro";
         localStorage.setItem("token", data.token);
         localStorage.setItem("user", JSON.stringify(data.user));
 
+        // Redirecciones según el rol_id
         if (data.user.rol_id === 1) {
-          window.location.href = "/dashboard";
-        } else if (data.user.rol_id === 2) {
-          window.location.href = "/admin";
+          window.location.href = "/dashboard"; // Alumno / Usuario común
+        } else if (data.user.rol_id === 2 || data.user.rol_id === 3) {
+          window.location.href = "/admin"; // Tanto el Admin (2) como el Revisor (3) van al mismo panel
         }
 
       } catch (error) {

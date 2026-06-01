@@ -156,25 +156,42 @@ router.get(
   verifyToken,
   verifyRole(2),
   async (req, res) => {
-  try {
+    try {
+      const page = parseInt(req.query.page) || 1;
+      const limit = parseInt(req.query.limit) || 5;
+      const offset = (page - 1) * limit;
 
+      const conn = await getConnection();
 
-    const conn = await getConnection();
+      const [countResult] = await conn.query(
+        "SELECT COUNT(*) AS total FROM usuarios"
+      );
+      const totalUsers = countResult[0].total;
+      const totalPages = Math.ceil(totalUsers / limit);
 
-    const [users] = await conn.query(`
-      SELECT id, email, estado, rol_id
-      FROM usuarios
-    `);
+      const [users] = await conn.query(
+        `
+        SELECT id, email, estado, rol_id
+        FROM usuarios
+        LIMIT ? OFFSET ?
+        `,
+        [limit, offset]
+      );
 
-    res.json(users);
+      res.json({
+        usuarios: users,
+        totalPages: totalPages,
+        currentPage: page
+      });
 
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({
-      error: "Error obteniendo usuarios"
-    });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({
+        error: "Error obteniendo usuarios"
+      });
+    }
   }
-});
+);
 
 router.get(
   "/profile",
