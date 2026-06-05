@@ -62,7 +62,7 @@
 
         const response =
           await fetch(
-            `${import.meta.env.PUBLIC_API_URL}/api/solicitudes/${id}/aprobar`,
+            `http://localhost:3000/api/solicitudes/${id}/aprobar`,
             {
               method: "PUT",
               headers: {
@@ -102,7 +102,7 @@
 
         const response =
           await fetch(
-            `${import.meta.env.PUBLIC_API_URL}/api/solicitudes/${id}/rechazar`,
+            `http://localhost:3000/api/solicitudes/${id}/rechazar`,
             {
               method: "PUT",
               headers: {
@@ -140,7 +140,7 @@
 
         const response =
           await fetch(
-            `${import.meta.env.PUBLIC_API_URL}/api/solicitudes`,
+            "http://localhost:3000/api/solicitudes",
             {
               headers: {
                 Authorization:

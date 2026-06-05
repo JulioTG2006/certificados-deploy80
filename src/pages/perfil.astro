@@ -81,9 +81,6 @@ import UserLayout from "../layouts/UserLayout.astro";
         id="mensaje"
         class="mt-4 font-semibold"
       ></p>
-      <p style="color:red">
-VERSION TEST 12345
-</p>
 
   </div>
 
@@ -103,14 +100,14 @@ VERSION TEST 12345
   async function cargarPerfil() {
     try {
 
-  const response = await fetch(
-    `${import.meta.env.PUBLIC_API_URL}/api/auth/profile`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    }
-  );
+      const response = await fetch(
+        "http://localhost:3000/api/auth/profile",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
 
       const data = await response.json();
 
@@ -141,8 +138,9 @@ VERSION TEST 12345
       document.getElementById("email").value;
 
     try {
-  const response = await fetch(
-    `${import.meta.env.PUBLIC_API_URL}/api/auth/profile`,
+
+      const response = await fetch(
+        "http://localhost:3000/api/auth/profile",
         {
           method: "PUT",
           headers: {

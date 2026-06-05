@@ -129,7 +129,7 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
       try {
 
         const response = await fetch(
-          `${import.meta.env.PUBLIC_API_URL}/api/auth/profile`,
+          "http://localhost:3000/api/auth/profile",
           {
             headers: {
               Authorization: `Bearer ${token}`
@@ -168,7 +168,7 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
       try {
 
         const response = await fetch(
-          `${import.meta.env.PUBLIC_API_URL}/api/auth/profile`,
+          "http://localhost:3000/api/auth/profile",
           {
             method: "PUT",
             headers: {

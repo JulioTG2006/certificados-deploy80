@@ -57,7 +57,7 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
           return;
         }
 
-        const response = await fetch(`${import.meta.env.PUBLIC_API_URL}/api/auth/users?page=${page}&limit=${limit}`, {
+        const response = await fetch(`http://localhost:3000/api/auth/users?page=${page}&limit=${limit}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
