@@ -81,6 +81,9 @@ import UserLayout from "../layouts/UserLayout.astro";
         id="mensaje"
         class="mt-4 font-semibold"
       ></p>
+      <p style="color:red">
+VERSION TEST 12345
+</p>
 
   </div>
 
@@ -138,10 +141,8 @@ import UserLayout from "../layouts/UserLayout.astro";
       document.getElementById("email").value;
 
     try {
-
-    const response = await fetch(
-      `${import.meta.env.PUBLIC_API_URL}/api/auth/profile`
-    );
+  const response = await fetch(
+    `${import.meta.env.PUBLIC_API_URL}/api/auth/profile`,
         {
           method: "PUT",
           headers: {
