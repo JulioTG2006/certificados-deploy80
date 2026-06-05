@@ -1,0 +1,51 @@
+<!DOCTYPE html><html lang="es"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Certificados</title><link rel="stylesheet" href="/_astro/global.B6kj9e1c.css"></head> <body class="bg-slate-100 min-h-screen"> <nav class="bg-white shadow-md"> <div class="max-w-7xl mx-auto px-8 py-4 flex justify-between items-center"> <div class="text-2xl font-bold text-blue-600">
+CERTIFICADOS
+</div> <div class="flex gap-6 items-center"> <a href="/dashboard" class="text-gray-700 hover:text-blue-600 font-medium">
+Dashboard
+</a> <a href="/certificados" class="text-gray-700 hover:text-blue-600 font-medium">
+Certificados
+</a> <a href="/solicitudes" class="text-gray-700 hover:text-blue-600 font-medium">
+Solicitudes
+</a> <a href="/perfil" class="text-gray-700 hover:text-blue-600 font-medium">
+Perfil
+</a> <button id="logoutBtn" class="bg-red-500 text-white px-4 py-2 rounded-xl hover:bg-red-600">
+Salir
+</button> </div> </div> </nav> <script type="module">document.getElementById("logoutBtn").addEventListener("click",()=>{localStorage.removeItem("token"),localStorage.removeItem("user"),window.location.href="/login"});</script> <main class="max-w-7xl mx-auto p-8">  <div class="mb-8"> <h1 class="text-4xl font-bold text-slate-800">
+Catálogo de Certificados
+</h1> <p class="text-gray-500 mt-2">
+Selecciona el certificado que deseas solicitar.
+</p> </div> <div id="certificadosContainer" class="grid md:grid-cols-3 gap-6"> <div class="text-gray-500">
+Cargando certificados...
+</div> </div> <script type="module">async function t(){try{const r=await(await fetch("${import.meta.env.PUBLIC_API_URL}/api/certificados/modelo")).json(),n=document.getElementById("certificadosContainer");n.innerHTML="",r.forEach(e=>{n.innerHTML+=`
+            <div
+              class="bg-white rounded-3xl shadow-md p-6 hover:shadow-xl transition"
+            >
+
+              <h2 class="text-2xl font-bold mb-4">
+                ${e.nombre}
+              </h2>
+
+              <p class="text-gray-600 mb-6">
+                ${e.descripcion}
+              </p>
+
+              <div class="flex gap-3">
+
+                  <a
+                    href="/certificados/${e.id}"
+                    class="bg-blue-600 text-white px-5 py-3 rounded-xl hover:bg-blue-700 transition inline-block"
+                  >
+                    Ver detalle
+                  </a>
+
+                  <a
+                    href="/certificados/preview/${e.id}"
+                    class="bg-green-600 text-white px-5 py-3 rounded-xl hover:bg-green-700 transition inline-block"
+                  >
+                    Vista previa
+                  </a>
+
+              </div>
+
+            </div>
+          `})}catch(i){console.error(i)}}t();</script>  </main> </body></html>

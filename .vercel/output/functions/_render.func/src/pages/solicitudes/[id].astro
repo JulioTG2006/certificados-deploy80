@@ -1,6 +1,7 @@
 ---
+import UserLayout from "../../layouts/UserLayout.astro";
+
 export const prerender = false;
-import UserLayout from "../../../layouts/UserLayout.astro";
 ---
 
 <UserLayout title="Detalle Solicitud">
@@ -9,33 +10,45 @@ import UserLayout from "../../../layouts/UserLayout.astro";
     id="detalleContainer"
     class="bg-white rounded-3xl shadow-md p-8"
   >
+
     <h1 class="text-3xl font-bold">
       Cargando...
     </h1>
+
   </div>
 
-<script is:inline>
+<script>
 
-  const token = localStorage.getItem("token");
+  const token =
+    localStorage.getItem("token");
 
   async function cargarDetalle() {
 
     try {
 
-      const id = window.location.pathname.split("/").pop();
+      const id =
+        window.location.pathname
+          .split("/")
+          .pop();
 
-      const response = await fetch(
-        `${import.meta.env.PUBLIC_API_URL}/api/solicitudes/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`
+      const response =
+        await fetch(
+          `${import.meta.env.PUBLIC_API_URL}/api/solicitudes/${id}`,
+          {
+            headers: {
+              Authorization:
+                `Bearer ${token}`
+            }
           }
-        }
-      );
+        );
 
-      const solicitud = await response.json();
+      const solicitud =
+        await response.json();
 
-      const container = document.getElementById("detalleContainer");
+      const container =
+        document.getElementById(
+          "detalleContainer"
+        );
 
       container.innerHTML = `
         <h1 class="text-4xl font-bold text-slate-800 mb-6">
@@ -43,6 +56,7 @@ import UserLayout from "../../../layouts/UserLayout.astro";
         </h1>
 
         <div class="space-y-4">
+
           <div>
             <strong>Estado:</strong>
             ${solicitud.estado}
@@ -55,17 +69,23 @@ import UserLayout from "../../../layouts/UserLayout.astro";
 
           <div>
             <strong>Fecha:</strong>
-            ${new Date(solicitud.fecha_solicitud).toLocaleDateString()}
+            ${new Date(
+              solicitud.fecha_solicitud
+            ).toLocaleDateString()}
           </div>
 
           ${
             solicitud.observacion
-              ? `<div>
-                   <strong>Observación:</strong>
-                   ${solicitud.observacion}
-                 </div>`
-              : ""
-          }
+            ? `
+                <div>
+                <strong>
+                    Observación:
+                </strong>
+                ${solicitud.observacion}
+                </div>
+            `
+            : ""
+            }
 
           <a
             href="/solicitudes"
@@ -73,11 +93,14 @@ import UserLayout from "../../../layouts/UserLayout.astro";
           >
             Volver
           </a>
+
         </div>
       `;
 
     } catch (error) {
+
       console.error(error);
+
     }
 
   }

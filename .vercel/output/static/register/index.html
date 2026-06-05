@@ -1,0 +1,9 @@
+<!DOCTYPE html><html lang="es"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Registro</title><link rel="stylesheet" href="/_astro/global.B6kj9e1c.css"></head> <body class="bg-slate-100 min-h-screen flex items-center justify-center">  <div class="w-full max-w-md bg-white shadow-xl rounded-3xl p-10"> <div class="text-center mb-8"> <h1 class="text-4xl font-bold text-blue-600">
+REGISTRO
+</h1> <p class="text-gray-500 mt-2">
+Crea una nueva cuenta
+</p> </div> <form id="registerForm" class="space-y-5"> <input type="email" id="email" placeholder="Correo electrónico" required class="w-full border border-gray-300 rounded-xl px-4 py-3"> <input type="password" id="password" placeholder="Contraseña" required class="w-full border border-gray-300 rounded-xl px-4 py-3"> <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-xl font-semibold hover:bg-blue-700">
+Registrarse
+</button> </form> <p id="message" class="text-center mt-4 text-red-500"></p> <div class="text-center mt-6"> <a href="/login" class="text-blue-600 hover:underline">
+Ya tengo cuenta
+</a> </div> </div> <script type="module">const a=document.getElementById("registerForm"),i=document.getElementById("message");a.addEventListener("submit",async t=>{t.preventDefault();const o=document.getElementById("email").value,n=document.getElementById("password").value,e=await fetch("https://certificados-deploy80-production.up.railway.app/api/auth/register",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:o,password:n})}),s=await e.json();e.ok?window.location.href="/login":i.textContent=s.error});</script>  </body></html>
