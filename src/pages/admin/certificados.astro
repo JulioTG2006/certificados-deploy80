@@ -49,7 +49,7 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
         localStorage.getItem("token");
 
       const response = await fetch(
-        `http://localhost:3000/api/certificados/modelos/${id}/${accion}`,
+        `${import.meta.env.PUBLIC_API_URL}/api/certificados/modelos/${id}/${accion}`,
         {
           method: "PUT",
           headers: {
@@ -82,7 +82,7 @@ import AdminLayout from "../../layouts/AdminLayout.astro";
         localStorage.getItem("token");
 
       const response = await fetch(
-        "http://localhost:3000/api/certificados/modelos/admin",
+        `${import.meta.env.PUBLIC_API_URL}/api/certificados/modelos/admin`,
         {
           headers: {
             Authorization:

@@ -74,7 +74,7 @@ import AdminLayout from "../../../layouts/AdminLayout.astro";
       try {
 
         const response = await fetch(
-          "http://localhost:3000/api/certificados/modelos",
+          `${import.meta.env.PUBLIC_API_URL}/api/certificados/modelos`,
           {
             method: "POST",
             headers: {

@@ -34,7 +34,7 @@ import UserLayout from "../layouts/UserLayout.astro";
       try {
 
         const response = await fetch(
-          "http://localhost:3000/api/certificados/modelos"
+          '${import.meta.env.PUBLIC_API_URL}/api/certificados/modelo'
         );
 
         const certificados =

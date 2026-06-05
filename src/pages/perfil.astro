@@ -101,7 +101,7 @@ import UserLayout from "../layouts/UserLayout.astro";
     try {
 
       const response = await fetch(
-        "http://localhost:3000/api/auth/profile",
+        `${import.meta.env.PUBLIC_API_URL}/api/auth/profile`,
         {
           headers: {
             Authorization: `Bearer ${token}`
@@ -140,7 +140,7 @@ import UserLayout from "../layouts/UserLayout.astro";
     try {
 
       const response = await fetch(
-        "http://localhost:3000/api/auth/profile",
+        `${import.meta.env.PUBLIC_API_URL}/api/auth/profile`,
         {
           method: "PUT",
           headers: {
