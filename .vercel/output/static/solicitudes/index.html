@@ -1,0 +1,56 @@
+<!DOCTYPE html><html lang="es"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Mis Solicitudes</title><link rel="stylesheet" href="/_astro/global.BwKOf-Su.css"></head> <body class="bg-slate-100 min-h-screen"> <nav class="bg-white shadow-md"> <div class="max-w-7xl mx-auto px-8 py-4 flex justify-between items-center"> <div class="text-2xl font-bold text-blue-600">
+CERTIFICADOS
+</div> <div class="flex gap-6 items-center"> <a href="/dashboard" class="text-gray-700 hover:text-blue-600 font-medium">
+Dashboard
+</a> <a href="/certificados" class="text-gray-700 hover:text-blue-600 font-medium">
+Certificados
+</a> <a href="/solicitudes" class="text-gray-700 hover:text-blue-600 font-medium">
+Solicitudes
+</a> <a href="/perfil" class="text-gray-700 hover:text-blue-600 font-medium">
+Perfil
+</a> <button id="logoutBtn" class="bg-red-500 text-white px-4 py-2 rounded-xl hover:bg-red-600">
+Salir
+</button> </div> </div> </nav> <script type="module">document.getElementById("logoutBtn").addEventListener("click",()=>{localStorage.removeItem("token"),localStorage.removeItem("user"),window.location.href="/login"});</script> <main class="max-w-7xl mx-auto p-8">  <div class="mb-8"> <h1 class="text-3xl font-bold text-slate-800">
+Mis Solicitudes
+</h1> <p class="text-gray-500 mt-2">
+Historial de solicitudes realizadas.
+</p> </div> <div id="solicitudesContainer" class="grid gap-6"> <div class="bg-white rounded-3xl shadow-md p-6">
+Cargando solicitudes...
+</div> </div> <script type="module">const n=localStorage.getItem("token");async function a(){try{const s=await(await fetch("http://localhost:3000/api/solicitudes/mis-solicitudes",{headers:{Authorization:`Bearer ${n}`}})).json(),t=document.getElementById("solicitudesContainer");if(t.innerHTML="",s.length===0){t.innerHTML=`
+            <div class="bg-white rounded-3xl shadow-md p-6">
+              No tienes solicitudes registradas.
+            </div>
+          `;return}s.forEach(e=>{t.innerHTML+=`
+              <div class="bg-white rounded-3xl shadow-md p-6">
+
+                <h2 class="text-2xl font-bold mb-3">
+                  ${e.modelo}
+                </h2>
+
+                <p class="text-gray-600 mb-3">
+                  ${e.motivo}
+                </p>
+
+                <span
+                  class="
+                    inline-block
+                    px-3 py-1 rounded-full text-sm
+                    ${e.estado==="pendiente"?"bg-yellow-100 text-yellow-700":e.estado==="aprobada"?"bg-green-100 text-green-700":"bg-red-100 text-red-700"}
+                  "
+                >
+                  ${e.estado}
+                </span>
+
+                <div class="mt-4">
+
+                  <a
+                    href="/solicitudes/${e.id}"
+                    class="bg-blue-600 text-white px-4 py-2 rounded-xl hover:bg-blue-700 transition"
+                  >
+                    Ver detalle
+                  </a>
+
+                </div>
+
+              </div>
+            `})}catch(o){console.error(o)}}a();</script>  </main> </body></html>

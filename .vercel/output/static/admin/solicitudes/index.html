@@ -1,0 +1,84 @@
+<!DOCTYPE html><html lang="es"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Solicitudes Pendientes</title><link rel="stylesheet" href="/_astro/global.BwKOf-Su.css"></head> <body class="bg-slate-100 min-h-screen"> <div class="flex"> <aside class="w-72 bg-slate-900 text-white min-h-screen p-6 flex flex-col"> <h2 id="sidebarTitle" class="text-3xl font-bold mb-10">
+ADMIN PANEL
+</h2> <nav class="flex flex-col gap-4 flex-1"> <a href="/admin" class="hover:bg-slate-800 px-4 py-3 rounded-xl transition">
+Dashboard
+</a> <a href="/admin/usuarios" class="solo-admin hover:bg-slate-800 px-4 py-3 rounded-xl transition">
+Usuarios
+</a> <a href="/admin/certificados" class="hover:bg-slate-800 px-4 py-3 rounded-xl transition">
+Certificados
+</a> <a href="/admin/solicitudes" class="hover:bg-slate-800 px-4 py-3 rounded-xl transition">
+Solicitudes
+</a> <a href="/admin/perfil" class="hover:bg-slate-800 px-4 py-3 rounded-xl transition">
+Mi Perfil
+</a> </nav> <button id="logoutBtn" class="bg-red-500 text-white px-4 py-3 rounded-xl hover:bg-red-600 w-full transition">
+Cerrar sesión
+</button> </aside> <script type="module">document.getElementById("logoutBtn").addEventListener("click",()=>{localStorage.removeItem("token"),localStorage.removeItem("user"),window.location.replace("/login")});const t=localStorage.getItem("user");if(t&&JSON.parse(t).rol_id===3){const e=document.getElementById("sidebarTitle");e&&(e.textContent="REVISOR PANEL"),document.querySelectorAll(".solo-admin").forEach(o=>{o.remove()})}</script> <main class="flex-1 p-8">  <div class="mb-8"> <h1 class="text-3xl font-bold text-slate-800">
+Solicitudes Pendientes
+</h1> <p class="text-gray-500 mt-2">
+Gestiona las solicitudes de certificados.
+</p> </div> <div class="mt-6"> <select id="estadoFiltro" class="border px-4 py-2 rounded-xl"> <option value="todos">
+Todas
+</option> <option value="pendiente">
+Pendientes
+</option> <option value="aprobada">
+Aprobadas
+</option> <option value="rechazada">
+Rechazadas
+</option> </select> </div> <div id="solicitudesContainer" class="grid gap-6 max-h-[650px] overflow-y-auto pr-2"> <div class="bg-white rounded-3xl shadow-md p-6">
+Cargando solicitudes...
+</div> </div> <script type="module">const i=localStorage.getItem("token");async function d(a){try{const o=await(await fetch(`http://localhost:3000/api/solicitudes/${a}/aprobar`,{method:"PUT",headers:{Authorization:`Bearer ${i}`}})).json();alert(o.message),n()}catch(t){console.error(t)}}async function c(a){const t=prompt("Ingrese el motivo del rechazo:");if(t)try{const r=await(await fetch(`http://localhost:3000/api/solicitudes/${a}/rechazar`,{method:"PUT",headers:{"Content-Type":"application/json",Authorization:`Bearer ${i}`},body:JSON.stringify({observacion:t})})).json();alert(r.message),n()}catch(o){console.error(o)}}async function n(){try{const t=await(await fetch("http://localhost:3000/api/solicitudes",{headers:{Authorization:`Bearer ${i}`}})).json(),o=document.getElementById("estadoFiltro").value,r=o==="todos"?t:t.filter(e=>e.estado===o),s=document.getElementById("solicitudesContainer");if(s.innerHTML="",r.length===0){s.innerHTML=`
+            <div class="bg-white rounded-3xl shadow-md p-6">
+              No hay solicitudes pendientes.
+            </div>
+          `;return}r.forEach(e=>{s.innerHTML+=`
+              <div class="bg-white rounded-3xl shadow-md p-6 border">
+
+                <h2 class="text-2xl font-bold mb-3">
+                  ${e.modelo}
+                </h2>
+
+                <p class="mb-2">
+                  <strong>Usuario:</strong>
+                  ${e.usuario}
+                </p>
+
+                <p class="mb-4">
+                  <strong>Motivo:</strong>
+                  ${e.motivo}
+                </p>
+
+                ${e.estado==="pendiente"?`
+                      <div class="flex gap-3">
+
+                        <button
+                          onclick="aprobarSolicitud(${e.id})"
+                          class="bg-green-600 text-white px-4 py-2 rounded-xl hover:bg-green-700 transition"
+                        >
+                          Aprobar
+                        </button>
+
+                        <button
+                          onclick="rechazarSolicitud(${e.id})"
+                          class="bg-red-600 text-white px-4 py-2 rounded-xl hover:bg-red-700 transition"
+                        >
+                          Rechazar
+                        </button>
+
+                      </div>
+                    `:`
+                      <div class="mt-2">
+
+                        <span
+                          class="
+                            px-3 py-1 rounded-full text-sm
+                            ${e.estado==="aprobada"?"bg-green-100 text-green-700":"bg-red-100 text-red-700"}
+                          "
+                        >
+                          ${e.estado==="aprobada"?"Solicitud aprobada":"Solicitud rechazada"}
+                        </span>
+
+                      </div>
+                    `}
+
+              </div>
+            `})}catch(a){console.error(a)}}window.aprobarSolicitud=d;window.rechazarSolicitud=c;document.getElementById("estadoFiltro").addEventListener("change",n);n();</script>  </main> </div> </body></html>
