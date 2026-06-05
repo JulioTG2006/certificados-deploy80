@@ -75,7 +75,7 @@ export const prerender = false;
 
       const response =
         await fetch(
-          `http://localhost:3000/api/certificados/modelos/${id}`
+          `${import.meta.env.PUBLIC_API_URL}/api/certificados/modelos/${id}`
         );
 
       const modelo =
@@ -116,7 +116,7 @@ export const prerender = false;
 
       const response =
         await fetch(
-          "http://localhost:3000/api/solicitudes",
+          `${import.meta.env.PUBLIC_API_URL}/api/solicitudes`,
           {
             method: "POST",
             headers: {

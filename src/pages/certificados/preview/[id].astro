@@ -38,7 +38,7 @@ export const prerender = false;
             .pop();
 
         const response = await fetch(
-          `http://localhost:3000/api/certificados/modelos/${id}`
+          `${import.meta.env.PUBLIC_API_URL}/api/certificados/modelos/${id}`
         );
 
         const certificado =
