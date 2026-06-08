@@ -60,16 +60,16 @@ import AuthLayout from "../layouts/AuthLayout.astro";
       const password = document.getElementById("password").value;
 
       try {
-        const response = await fetch(
-          '${import.meta.env.PUBLIC_API_URL}/api/auth/login',
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ email, password })
-          }
-        );
+      const response = await fetch(
+        `${import.meta.env.PUBLIC_API_URL}/api/auth/login`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ email, password })
+        }
+      );
 
         const data = await response.json();
 
