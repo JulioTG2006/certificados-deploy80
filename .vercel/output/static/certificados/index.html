@@ -16,7 +16,7 @@ Catálogo de Certificados
 Selecciona el certificado que deseas solicitar.
 </p> </div> <div id="certificadosContainer" class="grid md:grid-cols-3 gap-6"> <div class="text-gray-500">
 Cargando certificados...
-</div> </div> <script type="module">async function t(){try{const r=await(await fetch("${import.meta.env.PUBLIC_API_URL}/api/certificados/modelo")).json(),n=document.getElementById("certificadosContainer");n.innerHTML="",r.forEach(e=>{n.innerHTML+=`
+</div> </div> <script type="module">async function t(){try{const r=await(await fetch("https://certificados-deploy80-production.up.railway.app/api/certificados/modelo")).json(),o=document.getElementById("certificadosContainer");o.innerHTML="",r.forEach(e=>{o.innerHTML+=`
             <div
               class="bg-white rounded-3xl shadow-md p-6 hover:shadow-xl transition"
             >
