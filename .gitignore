@@ -22,4 +22,4 @@ pnpm-debug.log*
 .idea/
 .env.development
 .env.production
-backend/.env
+backend/.env.vercel 
