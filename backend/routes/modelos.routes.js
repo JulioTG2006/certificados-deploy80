@@ -3,28 +3,60 @@ import { getConnection } from "../config/db.js";
 
 const router = express.Router();
 
-/* 🔥 Crear modelo */
+/* LISTAR MODELOS */
+router.get("/", async (req, res) => {
+  try {
+    const conn = await getConnection();
+
+    const [rows] = await conn.query(`
+      SELECT *
+      FROM modelos_certificados
+    `);
+
+    res.json(rows);
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: "Error al obtener modelos"
+    });
+  }
+});
+
+/* CREAR MODELO */
 router.post("/", async (req, res) => {
   try {
-    const { titulo, descripcion, archivo_template, estado } = req.body;
+    const {
+      titulo,
+      descripcion,
+      archivo_template,
+      estado
+    } = req.body;
 
     const conn = await getConnection();
 
     const [result] = await conn.query(
-      `INSERT INTO modelos_certificados 
-       (titulo, descripcion, archivo_template, estado)
-       VALUES (?, ?, ?, ?)`,
-      [titulo, descripcion, archivo_template, estado]
+      `INSERT INTO modelos_certificados
+      (titulo, descripcion, archivo_template, estado)
+      VALUES (?, ?, ?, ?)`,
+      [
+        titulo,
+        descripcion,
+        archivo_template,
+        estado
+      ]
     );
 
     res.json({
       message: "Modelo creado",
-      id: result.insertId,
+      id: result.insertId
     });
 
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Error al crear modelo" });
+    res.status(500).json({
+      error: "Error al crear modelo"
+    });
   }
 });
 
